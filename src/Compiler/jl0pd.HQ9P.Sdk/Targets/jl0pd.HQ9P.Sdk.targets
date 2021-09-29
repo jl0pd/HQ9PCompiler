@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************************************************************
+jl0pd.HQ9P.Sdk.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+***********************************************************************************************
+-->
+
+<!-- This file is the core of sdk.
+     Based mostly on Microsoft.NET.Sdk.IL taken from https://github.com/dotnet/runtime/tree/main/src/coreclr/.nuget/Microsoft.NET.Sdk.IL
+ -->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildThisFileFullPath);$(MSBuildAllProjects)</MSBuildAllProjects>
+    <DefaultLanguageSourceExtension>.hq9p</DefaultLanguageSourceExtension>
+    <Language>HQ9P</Language>
+    <TargetRuntime>Managed</TargetRuntime>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('windows'))">win</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('linux'))">linux</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('osx'))">osx</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('freebsd'))">freebsd</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('netbsd'))">netbsd</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('illumos'))">illumos</_OSPlatform>
+    <_OSPlatform Condition="$([MSBuild]::IsOSPlatform('solaris'))">solaris</_OSPlatform>
+    <_OSArchitecture>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</_OSArchitecture>
+
+    <HQ9PCompilerVersion Condition="'$(HQ9PCompilerVersion)' == ''">0.0.1</HQ9PCompilerVersion>
+    <HQ9PCompilerPackageName>jl0pd.HQ9P.Compiler.$(HQ9PCompilerVersion)</HQ9PCompilerPackageName>
+
+    <!-- If HQ9PCompilerPath is specified, it will be used and no packages will be restored
+         Otherwise packages will be restored and ilasm and ildasm will be referenced from their packages.  -->
+    <HQ9PCompilerDir Condition="'$(HQ9PCompilerPath)' != ''">$([MSBuild]::NormalizeDirectory($(HQ9PCompilerPath)))</HQ9PCompilerDir>
+    <_IldasmDir Condition="'$(HQ9PCompilerPath)' != ''">$([MSBuild]::NormalizeDirectory($(HQ9PCompilerPath)))</_IldasmDir>
+    <CoreCompileDependsOn Condition="'$(HQ9PCompilerPath)' == ''">$(CoreCompileDependsOn);ResoleHQ9PCompilerPath</CoreCompileDependsOn>
+  </PropertyGroup>
+
+
+  <ItemGroup Condition="'$(HQ9PCompilerPath)' == ''">
+<!--
+    <_IlasmPackageReference Include="$(HQ9PCompilerPackageName)" Version="$(MicrosoftNETCoreILAsmVersion)" />
+    <PackageReference Include="@(_IlasmPackageReference)" ExcludeAssets="native" PrivateAssets="all" IsImplicitlyDefined="true" />
+-->
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CreateManifestResourceNamesDependsOn></CreateManifestResourceNamesDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CreateManifestResourceNames"
+          Condition="'@(EmbeddedResource)' != ''"
+          DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
+    <!-- Required by Microsoft.Common.targets -->
+  </Target>
+
+  <Target Name="ResoleHQ9PCompilerPath">
+    <PropertyGroup>
+      <HQ9PCompilerPath>C:\Repogit\Dotnet\HQ9PCompiler\src\Compiler\jl0pd.HQ9P.Compiler\bin\Debug\net6.0\jl0pd.HQ9P.Compiler.dll</HQ9PCompilerPath>
+    </PropertyGroup>
+  <!--
+    <ItemGroup>
+      <_IlasmPackageReference NativePath="$(NuGetPackageRoot)\%(Identity)\%(Version)\" />
+      <_IlasmSourceFiles Include="%(_IlasmPackageReference.NativePath)\**\*" />
+    </ItemGroup>
+    <Error Condition="!Exists('%(_IlasmPackageReference.NativePath)')" Text="Package %(_IlasmPackageReference.Identity)\%(_IlasmPackageReference.Version) was not restored" />
+
+    <PropertyGroup>
+      <HQ9PCompilerDir Condition="'$(HQ9PCompilerDir)' == '' and '%(_IlasmPackageReference.Identity)' == '$(HQ9PCompilerPackageName)'">%(_IlasmPackageReference.NativePath)/</HQ9PCompilerDir>
+      <_IldasmDir Condition="'$(_IldasmDir)' == '' and '%(_IlasmPackageReference.Identity)' == '$(MicrosoftNetCoreIldasmPackageName)'">%(_IlasmPackageReference.NativePath)/</_IldasmDir>
+    </PropertyGroup>
+  -->
+  </Target>
+
+  <Target Name="ValidateCompilerPath"
+          Condition="'$(HQ9PCompilerPath)' == ''"
+          AfterTargets="ResoleHQ9PCompilerPath">
+    <Error Text="Compiler is not found" />
+  </Target>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);ValidateCompilerPath</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CoreCompile"
+          Inputs="$(MSBuildAllProjects);
+                  @(Compile);
+                  $(HQ9PCompilerPath)"
+          Outputs="@(IntermediateAssembly)"
+          Returns=""
+          DependsOnTargets="$(CoreCompileDependsOn)">
+
+    <PropertyGroup>
+      <_AdditionalFlags Condition="'$(AttachDebugger)' != ''">$(_AdditionalFlags) --attach-debugger</_AdditionalFlags>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <_CompilerArgs>$(_CompilerArgs) @(Compile->'&quot;%(Identity)&quot;', ' ')</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) @(IntermediateAssembly->'-o &quot;%(Identity)&quot;', ' ')</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) @(ReferencePathWithRefAssemblies->'-r &quot;%(Identity)&quot;', ' ')</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) $(_AdditionalFlags)</_CompilerArgs>
+    </PropertyGroup>
+
+    <Exec ConsoleToMsBuild="true"
+          LogStandardErrorAsError="true"
+          Command="dotnet exec &quot;$(HQ9PCompilerPath)&quot; $(_CompilerArgs)">
+      <Output TaskParameter="ExitCode" PropertyName="_CompilerExitCode" />
+    </Exec>
+
+    <Error Text="Compilation failed" Condition="'$(_CompilerExitCode)' != '0'" />
+
+    <CallTarget Targets="$(TargetsTriggeredByCompilation)" Condition="'$(TargetsTriggeredByCompilation)' != ''"/>
+  </Target>
+
+  <!-- Target is called by the language server. No-op for HQ9PProj as there is no language service support. -->
+  <Target Name="CompileDesignTime" />
+
+  <!-- Import design time targets for Roslyn Project System. These are only available if Visual Studio is installed. -->
+  <!-- Required for project to load in Visual Studio. -->
+  <PropertyGroup>
+    <ManagedDesignTimeTargetsPath Condition="'$(ManagedDesignTimeTargetsPath)'==''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\Managed\Microsoft.Managed.DesignTime.targets</ManagedDesignTimeTargetsPath>
+  </PropertyGroup>
+  <Import Project="$(ManagedDesignTimeTargetsPath)" Condition="'$(ManagedDesignTimeTargetsPath)' != '' and Exists('$(ManagedDesignTimeTargetsPath)')" />
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+
+</Project>

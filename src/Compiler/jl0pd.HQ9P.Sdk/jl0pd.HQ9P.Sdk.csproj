@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.Build.NoTargets/3.1.0">
+
+  <PropertyGroup>
+    <PackageType>MSBuildSdk</PackageType>
+    <PackageDescription>Provides support for building HQ9P projects.</PackageDescription>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DebugType>none</DebugType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <ImplicitUsings>false</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../jl0pd.HQ9P.Compiler/bin/$(Configuration)/$(TargetFramework)/**" PackagePath="lib/$(TargetFramework)" Pack="true" /> <!-- definitely not best way -->
+    <None Include="sdk/**/*" PackagePath="sdk" Pack="true" />
+    <None Include="targets/**/*" PackagePath="targets" Pack="true" />
+  </ItemGroup>
+
+</Project>

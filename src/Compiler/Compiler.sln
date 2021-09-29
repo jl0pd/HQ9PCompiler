@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jl0pd.HQ9P.Sdk", "jl0pd.HQ9P.Sdk\jl0pd.HQ9P.Sdk.csproj", "{B19E3479-07E8-4426-847C-7A4E22C446A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jl0pd.HQ9P.Compiler", "jl0pd.HQ9P.Compiler\jl0pd.HQ9P.Compiler.csproj", "{D642F3AF-CEDC-473A-853A-F8197BC55C0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B19E3479-07E8-4426-847C-7A4E22C446A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19E3479-07E8-4426-847C-7A4E22C446A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19E3479-07E8-4426-847C-7A4E22C446A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19E3479-07E8-4426-847C-7A4E22C446A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D642F3AF-CEDC-473A-853A-F8197BC55C0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D642F3AF-CEDC-473A-853A-F8197BC55C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D642F3AF-CEDC-473A-853A-F8197BC55C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D642F3AF-CEDC-473A-853A-F8197BC55C0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

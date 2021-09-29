@@ -1,0 +1,6 @@
+<Project Sdk="jl0pd.HQ9P.Sdk/1.0.1">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>library</OutputType>
+  </PropertyGroup>
+</Project>

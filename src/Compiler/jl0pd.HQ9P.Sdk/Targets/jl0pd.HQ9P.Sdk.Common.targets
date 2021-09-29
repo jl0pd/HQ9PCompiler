@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************************************************************
+jl0pd.HQ9P.Sdk.Common.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+***********************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Condition="Exists('$(MSBuildToolsPath)\Microsoft.Managed.Before.targets')" Project="$(MSBuildToolsPath)\Microsoft.Managed.Before.targets" />
+
+  <Import Condition="'$(IsCrossTargetingBuild)' != 'true'" Project="$(MSBuildThisFileDirectory)jl0pd.HQ9P.Sdk.targets" />
+  <Import Condition="'$(IsCrossTargetingBuild)' == 'true'" Project="$(MSBuildToolsPath)\Microsoft.Common.CrossTargeting.targets" />
+
+  <Import Condition="Exists('$(MSBuildToolsPath)\Microsoft.Managed.After.targets')" Project="$(MSBuildToolsPath)\Microsoft.Managed.After.targets" />
+</Project>
