@@ -64,7 +64,7 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
 
   <Target Name="ResoleHQ9PCompilerPath">
     <PropertyGroup>
-      <HQ9PCompilerPath>C:\Repogit\Dotnet\HQ9PCompiler\src\Compiler\jl0pd.HQ9P.Compiler\bin\Debug\net6.0\jl0pd.HQ9P.Compiler.dll</HQ9PCompilerPath>
+      <HQ9PCompilerPath>$(MSBuildThisFileDirectory)../lib/net6.0/jl0pd.HQ9P.Compiler.dll</HQ9PCompilerPath>
     </PropertyGroup>
   <!--
     <ItemGroup>
