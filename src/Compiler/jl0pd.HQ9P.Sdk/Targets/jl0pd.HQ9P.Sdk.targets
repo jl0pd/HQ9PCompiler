@@ -40,17 +40,8 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
     <!-- If HQ9PCompilerPath is specified, it will be used and no packages will be restored
          Otherwise packages will be restored and ilasm and ildasm will be referenced from their packages.  -->
     <HQ9PCompilerDir Condition="'$(HQ9PCompilerPath)' != ''">$([MSBuild]::NormalizeDirectory($(HQ9PCompilerPath)))</HQ9PCompilerDir>
-    <_IldasmDir Condition="'$(HQ9PCompilerPath)' != ''">$([MSBuild]::NormalizeDirectory($(HQ9PCompilerPath)))</_IldasmDir>
     <CoreCompileDependsOn Condition="'$(HQ9PCompilerPath)' == ''">$(CoreCompileDependsOn);ResoleHQ9PCompilerPath</CoreCompileDependsOn>
   </PropertyGroup>
-
-
-  <ItemGroup Condition="'$(HQ9PCompilerPath)' == ''">
-<!--
-    <_IlasmPackageReference Include="$(HQ9PCompilerPackageName)" Version="$(MicrosoftNETCoreILAsmVersion)" />
-    <PackageReference Include="@(_IlasmPackageReference)" ExcludeAssets="native" PrivateAssets="all" IsImplicitlyDefined="true" />
--->
-  </ItemGroup>
 
   <PropertyGroup>
     <CreateManifestResourceNamesDependsOn></CreateManifestResourceNamesDependsOn>
@@ -62,33 +53,12 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
     <!-- Required by Microsoft.Common.targets -->
   </Target>
 
-  <Target Name="ResoleHQ9PCompilerPath">
+  <Target Name="ResoleHQ9PCompilerPath"
+          Condition="'$(HQ9PCompilerPath)' == ''">
     <PropertyGroup>
       <HQ9PCompilerPath>$(MSBuildThisFileDirectory)../lib/net6.0/jl0pd.HQ9P.Compiler.dll</HQ9PCompilerPath>
     </PropertyGroup>
-  <!--
-    <ItemGroup>
-      <_IlasmPackageReference NativePath="$(NuGetPackageRoot)\%(Identity)\%(Version)\" />
-      <_IlasmSourceFiles Include="%(_IlasmPackageReference.NativePath)\**\*" />
-    </ItemGroup>
-    <Error Condition="!Exists('%(_IlasmPackageReference.NativePath)')" Text="Package %(_IlasmPackageReference.Identity)\%(_IlasmPackageReference.Version) was not restored" />
-
-    <PropertyGroup>
-      <HQ9PCompilerDir Condition="'$(HQ9PCompilerDir)' == '' and '%(_IlasmPackageReference.Identity)' == '$(HQ9PCompilerPackageName)'">%(_IlasmPackageReference.NativePath)/</HQ9PCompilerDir>
-      <_IldasmDir Condition="'$(_IldasmDir)' == '' and '%(_IlasmPackageReference.Identity)' == '$(MicrosoftNetCoreIldasmPackageName)'">%(_IlasmPackageReference.NativePath)/</_IldasmDir>
-    </PropertyGroup>
-  -->
   </Target>
-
-  <Target Name="ValidateCompilerPath"
-          Condition="'$(HQ9PCompilerPath)' == ''"
-          AfterTargets="ResoleHQ9PCompilerPath">
-    <Error Text="Compiler is not found" />
-  </Target>
-
-  <PropertyGroup>
-    <CoreCompileDependsOn>$(CoreCompileDependsOn);ValidateCompilerPath</CoreCompileDependsOn>
-  </PropertyGroup>
 
   <Target Name="CoreCompile"
           Inputs="$(MSBuildAllProjects);
@@ -106,6 +76,9 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
       <_CompilerArgs>$(_CompilerArgs) @(Compile->'&quot;%(Identity)&quot;', ' ')</_CompilerArgs>
       <_CompilerArgs>$(_CompilerArgs) @(IntermediateAssembly->'-o &quot;%(Identity)&quot;', ' ')</_CompilerArgs>
       <_CompilerArgs>$(_CompilerArgs) @(ReferencePathWithRefAssemblies->'-r &quot;%(Identity)&quot;', ' ')</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) -v $(Version)</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) -n $(RootNamespace)</_CompilerArgs>
+      <_CompilerArgs>$(_CompilerArgs) -t $(OutputType)</_CompilerArgs>
       <_CompilerArgs>$(_CompilerArgs) $(_AdditionalFlags)</_CompilerArgs>
     </PropertyGroup>
 

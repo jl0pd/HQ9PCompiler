@@ -1,0 +1,17 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)../../Compiler/jl0pd.HQ9P.Sdk/Sdk/sdk.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>exe</OutputType>
+
+    <HQ9PCompilerPath>$(MSBuildThisFileDirectory)../../Compiler/jl0pd.HQ9P.Compiler/bin/debug/net6.0/jl0pd.HQ9P.Compiler.dll</HQ9PCompilerPath>
+    <AttachDebugger>true</AttachDebugger>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)../../Compiler/jl0pd.HQ9P.Compiler/jl0pd.HQ9P.Compiler.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)../../Compiler/jl0pd.HQ9P.Sdk/Sdk/sdk.targets" />
+</Project>

@@ -11,12 +11,7 @@ public static class Compiler
 {
     public static void StartCompilation(Config cfg)
     {
-        if (cfg.AttachDebugger)
-        {
-            Debugger.Launch();
-        }
-
-        Compile(CompilationContext.Create(cfg.Reference, cfg.Files.First()), cfg);
+        Compile(CompilationContext.Create(cfg), cfg);
     }
 
     static void Compile(CompilationContext ctx, Config cfg)
@@ -55,12 +50,12 @@ public static class Compiler
 
         var il = mainMethod.Body.GetILProcessor();
 
-        il.Emit(OpCodes.Ldsfld, field);
-        il.Emit(OpCodes.Ldc_I4_1);
-        il.Emit(OpCodes.Add);
-        il.Emit(OpCodes.Stsfld, field);
+        il.Emit(Ldsfld, field);
+        il.Emit(Ldc_I4_1);
+        il.Emit(Add);
+        il.Emit(Stsfld, field);
 
-        il.Emit(OpCodes.Ret);
+        il.Emit(Ret);
     }
 
     private static void CompileNine(CompilationContext ctx, MethodDefinition mainMethod)
@@ -156,6 +151,10 @@ public static class Compiler
         il.Append(x43);
     }
 
+    // Since it's not obvious what to use to create quine, I'm going just print 'Q'.
+    // Should I write compiler code - only this method / this class / entire project (including .csproj)
+    // OR msil OR generated assembly OR something else?
+    // I understand that this is not honest implementation
     private static void CompileQuine(CompilationContext ctx, MethodDefinition mainMethod)
         => EmitWriteLine("Q", mainMethod, ctx);
 
@@ -175,8 +174,8 @@ public static class Compiler
         var writeLine = ctx.Import(writeLineRef);
 
         var il = method.Body.GetILProcessor();
-        il.Emit(OpCodes.Ldstr, str);
-        il.Emit(OpCodes.Call, writeLine);
-        il.Emit(OpCodes.Ret);
+        il.Emit(Ldstr, str);
+        il.Emit(Call, writeLine);
+        il.Emit(Ret);
     }
 }
