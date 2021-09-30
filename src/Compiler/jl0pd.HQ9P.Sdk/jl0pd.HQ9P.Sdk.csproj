@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.Build.NoTargets/3.1.0">
 
   <PropertyGroup>
+    <PackageId>jl0pd.HQ9P.Sdk</PackageId>
+    <Title>jl0pd.HQ9P.Sdk</Title>
+
     <PackageType>MSBuildSdk</PackageType>
     <PackageDescription>Provides support for building HQ9P projects.</PackageDescription>
 

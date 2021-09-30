@@ -1,7 +1,17 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.4-beta</Version>
+    <Version>0.0.5-beta</Version>
+    <Authors>Denis Proshutinskii</Authors>
+    <Product>HQ9P</Product>
+    <PackageTags>compiler;sdk;hq9p</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/jl0pd/HQ9PCompiler</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/jl0pd/HQ9PCompiler/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup>
