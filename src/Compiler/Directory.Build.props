@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.5-beta</Version>
+    <Version>0.0.9-beta</Version>
     <Authors>Denis Proshutinskii</Authors>
     <Product>HQ9P</Product>
     <PackageTags>compiler;sdk;hq9p</PackageTags>

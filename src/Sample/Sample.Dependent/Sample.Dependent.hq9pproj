@@ -1,6 +1,6 @@
-<Project Sdk="jl0pd.HQ9P.Sdk/0.0.4-beta">
+<Project Sdk="jl0pd.HQ9P.Sdk/0.0.9-beta">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <OutputType>library</OutputType>
+    <OutputType>exe</OutputType>
   </PropertyGroup>
 </Project>

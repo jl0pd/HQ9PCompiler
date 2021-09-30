@@ -43,6 +43,7 @@ public static class Compiler
         }
 
         ctx.MainType.Methods.Add(mainMethod);
+        ctx.MainType.Module.Assembly.EntryPoint = mainMethod;
         ctx.MainType.Module.Assembly.Write(cfg.Output.FullName);
     }
 
